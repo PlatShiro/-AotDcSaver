@@ -1,0 +1,14 @@
+#!/bin/sh
+
+#Get the port
+line=$(head -n 1 PortSwap.plat)
+
+iptables --flush
+iptables --policy INPUT ACCET
+iptables --policy OUTPUT ACCEPT
+iptables --policy FORWARD DROP
+iptables -N AoTTG
+iptables -A INPUT -p udp --dport $line -m limit --limit 10/s -j ACCEPT
+iptables -A INPUT -p udo --dport $line AoTTG
+iptables -A AoTTGLogging -p udp --dport $line -j LOG --log-level 6
+iptables -A AoTTGLogging -p udp --dport $line -j DROP
