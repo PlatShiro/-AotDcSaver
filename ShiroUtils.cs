@@ -1,3 +1,35 @@
+[RPC]
+    private void Chat(string content, string sender, PhotonMessageInfo f)
+    {
+        #pragma warning disable
+        if (!f.sender.isLocal)
+        {
+            try
+            {
+                #region BeginReplacing //Replace the strings
+                content = "<b>" + Regex.Replace(Regex.Replace(Regex.Replace(content, @"\<\/color\>", "\0")
+                , @"\<color\=.*?\>", "\0"), @"[^0-9a-zA-Z -:\/\\\\@\#\~\=\+\\)(\""\£\$\%\^\&\*\[\]\{\}\<\>]", "\0") + "</b>";
+                sender = "<color=#81F79F><b>" + Regex.Replace(Regex.Replace(Convert.ToString(f.sender.customProperties[PhotonPlayerProperty.name])
+                , @"\[\w{6}\]", "\0"), @"\[\-\]", "\0") + "</b></color>";
+                content = Regex.Match(content, @"\[\w{6}\]").Success ? 
+                Regex.Replace(Regex.Replace(content, @"\[\-\]", "\0"), @"\[\w{6}\]", "\0") : content;
+                #endregion EndReplacing //End the replacing
+            }
+            catch (Exception ex)
+            {
+                #line default
+                shirocmd.slogger = "Error:- " + ex;
+            }
+        }
+        #region CheckForNulls //Check for bad strings
+        if (sender == string.Empty || sender == null)
+            sender += "[NonAlphaNumeric]";
+        #endregion CheckForNulls
+        string id = f.sender.isLocal ? "SM" : Convert.ToString(f.sender.ID);
+        InRoomChat.messages.Add(string.Concat("<b><color=#FFBF00>[" + id + "]</color></b> ", sender, ": " + content));
+        #pragma warning restore
+    }
+
 #region checkingPropertiesFunc //Check for similar prop values
     public Func<bool, string> propValMatchDead = (string matcher) =>
     {
