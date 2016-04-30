@@ -9,6 +9,6 @@ iptables --policy OUTPUT ACCEPT
 iptables --policy FORWARD DROP
 iptables -N AoTTG
 iptables -A INPUT -p udp --dport $line -m limit --limit 10/s -j ACCEPT
-iptables -A INPUT -p udo --dport $line AoTTG
+iptables -A INPUT -p udp --dport $line AoTTG
 iptables -A AoTTGLogging -p udp --dport $line -j LOG --log-level 6
 iptables -A AoTTGLogging -p udp --dport $line -j DROP
