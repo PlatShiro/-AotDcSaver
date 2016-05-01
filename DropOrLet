@@ -4,7 +4,7 @@
 line=$(head -n 1 PortSwap.plat)
 
 iptables --flush
-iptables --policy INPUT ACCET
+iptables --policy INPUT ACCEPT
 iptables --policy OUTPUT ACCEPT
 iptables --policy FORWARD DROP
 iptables -N AoTTG
